@@ -33,3 +33,47 @@ Subject: Your login code
 Use this code to complete login: 648639
 (Valid for 10 minutes)
 --------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T19:09:50Z
+To: rb690@sussex.ac.uk
+Subject: Your login code
+
+Use this code to complete login: 069247
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T19:14:25Z
+To: admin@example.com
+Subject: Your login code
+
+Use this code to complete login: 200965
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T19:14:53Z
+To: rb690@sussex.ac.uk
+Subject: Your login code
+
+Use this code to complete login: 587888
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T19:21:30Z
+To: ruairibradley828@yahoo.co.uk
+Subject: Verify your email
+
+Click to verify: http://127.0.0.1:5000/verify/eyJ1aWQiOjUsImVtYWlsIjoicnVhaXJpYnJhZGxleTgyOEB5YWhvby5jby51ayJ9.aSSwOg.64qSbfV10HJVAH56anCz_Zr82bo
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T19:51:26Z
+To: rb690@sussex.ac.uk
+Subject: Your login code
+
+Use this code to complete login: 593306
+(Valid for 10 minutes)
+--------------------

@@ -1,6 +1,9 @@
+# FILE: app/__init__.py
+# Adds: no-store cache headers, 403 handler (nice evidence), keeps your CSP and blueprints.
+
 import os
 import secrets
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
 
@@ -8,11 +11,7 @@ db = SQLAlchemy()
 csrf = CSRFProtect()
 
 def create_app():
-    """
-    Factory pattern so tests can create isolated apps.
-    """
     from .config import load_config
-
     app = Flask(__name__, template_folder="templates", static_folder="static")
     app.config.update(load_config())
 
@@ -21,15 +20,12 @@ def create_app():
 
     @app.after_request
     def set_security_headers(resp):
-        """
-        Strong CSP + common hardening headers.
-        Why: neutralise inline/script injection, framing, content sniffing.
-        """
+        # Keep CSP permissive for inline <style>; tighten later if you move CSS to static/app.css
         resp.headers["Content-Security-Policy"] = (
             "default-src 'self'; "
             "img-src 'self' data:; "
             "script-src 'self'; "
-            "style-src 'self'; "
+            "style-src 'self' 'unsafe-inline'; "
             "object-src 'none'; "
             "base-uri 'self'; "
             "frame-ancestors 'none'; "
@@ -38,19 +34,25 @@ def create_app():
         resp.headers["Referrer-Policy"] = "no-referrer"
         resp.headers["X-Content-Type-Options"] = "nosniff"
         resp.headers["X-Frame-Options"] = "DENY"
-        resp.headers["X-XSS-Protection"] = "0"  # obsolete in modern browsers
+        resp.headers["X-XSS-Protection"] = "0"
+        # Why: avoid caching auth-sensitive pages in browser/proxies
+        resp.headers["Cache-Control"] = "no-store"
+        resp.headers["Pragma"] = "no-cache"
+        resp.headers["Expires"] = "0"
         return resp
+
+    @app.errorhandler(403)
+    def forbidden(e):
+        # Why: clear, evidencable 403 page for access control demo
+        return render_template("403.html"), 403
 
     @app.context_processor
     def expose_security_flags():
-        # Used by templates for hints (e.g., upload size).
         max_bytes = int(app.config.get("MAX_CONTENT_LENGTH", 0))
         return {"SEC_FLAGS": {"UploadLimitMB": max_bytes // (1024 * 1024) if max_bytes else 0}}
 
-    # Ensure uploads dir exists (non-public).
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
-    # Blueprints (keep routes modular).
     from .routes.main import bp as main_bp
     from .routes.auth import bp as auth_bp
     from .routes.twofa import bp as twofa_bp
@@ -66,10 +68,7 @@ def create_app():
 
 
 def _ensure_schema(app: Flask) -> None:
-    """
-    Idempotent SQLite column adds for small upgrades.
-    Why: avoid manual migrations during coursework.
-    """
+    # Idempotent column adds for upgrades
     from sqlalchemy import inspect, text
     with app.app_context():
         insp = inspect(db.engine)
@@ -81,21 +80,16 @@ def _ensure_schema(app: Flask) -> None:
                 conn.execute(text("ALTER TABLE user ADD COLUMN email_otp_code VARCHAR(6)"))
             if "email_otp_expires" not in cols:
                 conn.execute(text("ALTER TABLE user ADD COLUMN email_otp_expires DATETIME"))
-            if "backup_codes_json" not in cols:
-                conn.execute(text("ALTER TABLE user ADD COLUMN backup_codes_json TEXT"))
-
+            # backup_codes_json intentionally not used
 
 def bootstrap(app):
-    """
-    First run: create tables, apply schema adds, seed admin.
-    """
     from .models import User
     with app.app_context():
         db.create_all()
         _ensure_schema(app)
         if not User.query.filter_by(is_admin=True).first():
             admin_email = "admin@example.com"
-            admin_pw = "Admin#" + secrets.token_urlsafe(6)  # random; printed for demo
+            admin_pw = "Admin#" + secrets.token_urlsafe(6)
             admin = User(
                 email=admin_email,
                 name="Admin",

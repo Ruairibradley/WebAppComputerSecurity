@@ -1,5 +1,4 @@
-<!-- admin requests -->
-"""
+<!-- FILE: app/templates/admin_requests.html -->
 {% extends "base.html" %}
 {% block content %}
   <h2>All Evaluation Requests</h2>
@@ -11,10 +10,15 @@
         <td>{{ r.user.email }}</td>
         <td>{{ r.contact_method }}</td>
         <td>{{ r.comment_sanitized }}</td>
-        <td>{% if r.photo_filename %}<a href="{{ url_for('admin.download_photo', filename=r.photo_filename) }}">download</a>{% else %}-{% endif %}</td>
+        <td>
+          {% if r.photo_filename %}
+            <a href="{{ url_for('admin.request_photo', rid=r.id) }}">download</a>
+          {% else %}
+            -
+          {% endif %}
+        </td>
         <td>{{ r.created_at }}</td>
       </tr>
     {% endfor %}
   </table>
 {% endblock %}
-"""

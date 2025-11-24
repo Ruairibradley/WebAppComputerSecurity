@@ -1,4 +1,5 @@
-<!-- Base page -->
+<!-- FILE: app/templates/base.html -->
+<!-- Changes: Logout is now POST with CSRF (prevents CSRF logout). Everything else same. -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,7 +8,7 @@
     <title>Lovejoy</title>
     <style>
       body { font-family: system-ui, sans-serif; padding: 1rem; max-width: 920px; margin: 0 auto; }
-      nav a { margin-right: .75rem; }
+      nav a, nav form { margin-right: .75rem; display: inline-block; }
       .flash { padding: .5rem .75rem; border: 1px solid #ccc; margin: .4rem 0; }
       table { border-collapse: collapse; width: 100%; }
       th, td { border: 1px solid #ddd; padding: .5rem; vertical-align: top; }
@@ -25,7 +26,10 @@
         {% if session.get('is_admin') %}
           <a href="{{ url_for('admin.admin_requests') }}">Admin: Requests</a>
         {% endif %}
-        <a href="{{ url_for('auth.logout') }}">Logout</a>
+        <form method="post" action="{{ url_for('auth.logout') }}" style="display:inline">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" style="background:none;border:none;color:#06c;text-decoration:underline;cursor:pointer;padding:0;">Logout</button>
+        </form>
       {% else %}
         <a href="{{ url_for('auth.register') }}">Register</a>
         <a href="{{ url_for('auth.login') }}">Login</a>
@@ -40,7 +44,6 @@
       {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}
-    <!-- Load password meter JS (CSP allows self-hosted scripts) -->
-    <script defer src="{{ url_for('static', filename='pw_meter.js') }}"></script>
+    <script src="{{ url_for('static', filename='pw_meter.js') }}"></script>
   </body>
 </html>
