@@ -1,0 +1,28 @@
+<!-- my requests page -->
+{% extends "base.html" %}
+{% block content %}
+  <h2>My Evaluation Requests</h2>
+
+  {% if rows and rows|length %}
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Contact</th>
+        <th>Comment</th>
+        <th>Photo</th>
+        <th>Created</th>
+      </tr>
+      {% for r in rows %}
+        <tr>
+          <td>{{ r.id }}</td>
+          <td>{{ r.contact_method }}</td>
+          <td>{{ r.comment_sanitized }}</td>
+          <td>{% if r.photo_filename %}yes{% else %}-{% endif %}</td>
+          <td>{{ r.created_at }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>No requests yet. <a href="{{ url_for('evaluation.request_evaluation') }}">Submit one now</a>.</p>
+  {% endif %}
+{% endblock %}

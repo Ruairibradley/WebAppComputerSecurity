@@ -1,0 +1,43 @@
+<!-- register -->
+{% extends "base.html" %}
+{% block content %}
+  <h2>Register</h2>
+  <form method="post" novalidate>
+    {{ form.hidden_tag() }} <!-- CSRF -->
+
+    <div>
+      {{ form.email.label }} {{ form.email(size=40) }}
+      {% if form.email.errors %}<div style="color:#b91c1c">{{ form.email.errors[0] }}</div>{% endif %}
+    </div>
+
+    <div>
+      {{ form.name.label }} {{ form.name(size=30) }}
+      {% if form.name.errors %}<div style="color:#b91c1c">{{ form.name.errors[0] }}</div>{% endif %}
+    </div>
+
+    <div>
+      {{ form.phone.label }} {{ form.phone(size=20) }}
+      {% if form.phone.errors %}<div style="color:#b91c1c">{{ form.phone.errors[0] }}</div>{% endif %}
+    </div>
+
+    <div>
+      {{ form.password.label }}
+      {{ form.password(size=30, id="pw_reg") }}
+      <div class="meter" id="meter_reg"><div></div></div>
+      <ul id="rules_reg" style="margin:.25rem 0 .5rem 1rem; padding-left:1rem;"></ul>
+      {% if form.password.errors %}<div style="color:#b91c1c">{{ form.password.errors[0] }}</div>{% endif %}
+    </div>
+
+    <div>
+      {{ form.confirm.label }}
+      {{ form.confirm(size=30, id="pw_confirm_reg") }}
+      <div id="match_reg" style="margin:.25rem 0; font-size:.95rem;"></div>
+      {% if form.confirm.errors %}<div style="color:#b91c1c">{{ form.confirm.errors[0] }}</div>{% endif %}
+    </div>
+
+    <div>{{ form.submit() }}</div>
+  </form>
+
+  {% if strength_hint %}<p><em>Password feedback:</em> {{ strength_hint }}</p>{% endif %}
+  <p><small>After registering, check the <strong>terminal</strong> or <strong>outbox.txt</strong> for your verification link.</small></p>
+{% endblock %}

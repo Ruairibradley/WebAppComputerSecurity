@@ -1,0 +1,12 @@
+<!-- index page -->
+"""
+{% extends "base.html" %}
+{% block content %}
+  <h1>Lovejoy Antique Evaluation</h1>
+  {% if session.get('user_email') %}
+    <p>Welcome, {{ session.get('user_email') }}.</p>
+  {% else %}
+    <p>Please register or log in to request an evaluation.</p>
+  {% endif %}
+{% endblock %}
+"""

@@ -1,0 +1,11 @@
+<!-- 2 factor email authentication instead of QR code -->
+{% extends "base.html" %}
+{% block content %}
+  <h2>Email 2FA</h2>
+  <p>A 6-digit login code has been sent to your email (check terminal or outbox.txt). Enter it below:</p>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div>{{ form.totp.label }} {{ form.totp(size=10) }}</div>
+    <div>{{ form.submit() }}</div>
+  </form>
+{% endblock %}

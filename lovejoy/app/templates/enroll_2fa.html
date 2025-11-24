@@ -1,0 +1,13 @@
+<!-- First time 2fa sign up -->
+{% extends "base.html" %}
+{% block content %}
+  <h2>Set up Two-Factor Authentication</h2>
+  <p>Scan the QR with Google Authenticator (or similar), then enter a 6-digit code to confirm.</p>
+  <img src="{{ url_for('twofa.enroll_qr') }}" alt="TOTP QR">
+  <p><small>Backup secret (store safely): {{ secret }}</small></p>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div>{{ form.totp.label }} {{ form.totp(size=10) }}</div>
+    <div>{{ form.submit() }}</div>
+  </form>
+{% endblock %}

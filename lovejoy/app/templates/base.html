@@ -1,0 +1,46 @@
+<!-- Base page -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lovejoy</title>
+    <style>
+      body { font-family: system-ui, sans-serif; padding: 1rem; max-width: 920px; margin: 0 auto; }
+      nav a { margin-right: .75rem; }
+      .flash { padding: .5rem .75rem; border: 1px solid #ccc; margin: .4rem 0; }
+      table { border-collapse: collapse; width: 100%; }
+      th, td { border: 1px solid #ddd; padding: .5rem; vertical-align: top; }
+      input, select { padding: .35rem; }
+      .meter { height: 10px; background: #eee; border-radius: 9999px; overflow: hidden; margin:.25rem 0; }
+      .meter > div { height: 100%; width: 0%; transition: width .2s; }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="{{ url_for('main.index') }}">Home</a>
+      {% if session.get('user_id') %}
+        <a href="{{ url_for('evaluation.request_evaluation') }}">Request Evaluation</a>
+        <a href="{{ url_for('evaluation.my_requests') }}">My Requests</a>
+        {% if session.get('is_admin') %}
+          <a href="{{ url_for('admin.admin_requests') }}">Admin: Requests</a>
+        {% endif %}
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('auth.register') }}">Register</a>
+        <a href="{{ url_for('auth.login') }}">Login</a>
+      {% endif %}
+    </nav>
+    <hr>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash"><strong>{{ category.title() }}:</strong> {{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+    <!-- Load password meter JS (CSP allows self-hosted scripts) -->
+    <script defer src="{{ url_for('static', filename='pw_meter.js') }}"></script>
+  </body>
+</html>

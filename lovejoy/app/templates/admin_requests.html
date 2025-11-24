@@ -1,0 +1,20 @@
+<!-- admin requests -->
+"""
+{% extends "base.html" %}
+{% block content %}
+  <h2>All Evaluation Requests</h2>
+  <table>
+    <tr><th>ID</th><th>User</th><th>Contact</th><th>Comment</th><th>Photo</th><th>Created</th></tr>
+    {% for r in requests %}
+      <tr>
+        <td>{{ r.id }}</td>
+        <td>{{ r.user.email }}</td>
+        <td>{{ r.contact_method }}</td>
+        <td>{{ r.comment_sanitized }}</td>
+        <td>{% if r.photo_filename %}<a href="{{ url_for('admin.download_photo', filename=r.photo_filename) }}">download</a>{% else %}-{% endif %}</td>
+        <td>{{ r.created_at }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
+"""

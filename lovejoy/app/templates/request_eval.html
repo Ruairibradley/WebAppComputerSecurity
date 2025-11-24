@@ -1,0 +1,16 @@
+<!-- Request eval -->
+
+{% extends "base.html" %}
+{% block content %}
+  <h2>Request Evaluation</h2>
+  <form method="post" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <div>{{ form.contact_method.label }} {{ form.contact_method() }}</div>
+    <div>{{ form.comment.label }} {{ form.comment(size=60) }}</div>
+    <div>
+      {{ form.photo.label }} {{ form.photo() }}
+      <div><small>Allowed: .jpg/.jpeg/.png, max {{ SEC_FLAGS["UploadLimitMB"] }}MB.</small></div>
+    </div>
+    <div>{{ form.submit() }}</div>
+  </form>
+{% endblock %}

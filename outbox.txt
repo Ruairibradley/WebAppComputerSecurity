@@ -1,0 +1,35 @@
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T13:36:39Z
+To: ruairibradley828@gmail.com
+Subject: Account locked due to failed logins
+
+Your account was locked for 15 minutes due to repeated failed logins. If this wasn't you, reset your password.
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T13:42:56Z
+To: admin@example.com
+Subject: Password reset
+
+Reset link: http://127.0.0.1:5000/reset/eyJ1aWQiOjEsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJwdXJwb3NlIjoicmVzZXQifQ.aSRg4A.A2DT57KureD95TCYIkLkQ7dcw44
+(Expires in 1 hour)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T13:48:40Z
+To: rb690@sussex.ac.uk
+Subject: Your login code
+
+Use this code to complete login: 781265
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T18:51:58Z
+To: rb690@sussex.ac.uk
+Subject: Your login code
+
+Use this code to complete login: 648639
+(Valid for 10 minutes)
+--------------------

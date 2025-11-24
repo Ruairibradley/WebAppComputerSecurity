@@ -1,0 +1,12 @@
+<!-- 2 factor authenticaiton page -->
+{% extends "base.html" %}
+{% block content %}
+  <h2>Two-Factor Authentication</h2>
+  <p>Enter the 6-digit code from your authenticator app.</p>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div>{{ form.totp.label }} {{ form.totp(size=10) }}</div>
+    <div>{{ form.submit() }}</div>
+  </form>
+  <p><a href="{{ url_for('auth.login_2fa_email') }}">Use email code instead</a></p>
+{% endblock %}
