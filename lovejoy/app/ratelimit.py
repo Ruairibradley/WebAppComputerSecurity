@@ -2,13 +2,14 @@ import time
 from collections import deque
 from typing import Tuple, Deque, Dict
 
-# key -> deque of timestamps.
-_BUCKETS: Dict[str, Deque[float]] = {}
+_BUCKETS: Dict[str, Deque[float]] = {} # rate limit buckets
 
 def _now() -> float:
-    """Current time in seconds.
-    args: None
-    returns: float
+    """Get current time in seconds.
+    args:
+        None
+    returns:
+        current time as float
     """
     return time.time()
 

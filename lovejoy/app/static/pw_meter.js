@@ -1,7 +1,7 @@
 (function () {
     /* Password strength meter and match indicator */
   function ready(fn) {
-    /* Run fn() when DOM is ready */
+    // Dom ready helper
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", fn, { once: true });
     } else {
@@ -10,7 +10,7 @@
   }
 
   function assessPw(pw) {
-    //5 satisfied criteria = max strength for password.
+    // pass strgth assessment
     let s = 0;
     if ((pw || "").length >= 12) s++;
     if (/[A-Z]/.test(pw)) s++;
@@ -29,6 +29,7 @@
     const seg = bar ? bar.querySelector("div") : null;
 
     function update() {
+      // Update meter and rules
       const v = input.value || "";
       const s = assessPw(v);
       if (seg) {
@@ -89,5 +90,5 @@
     // Minimal diagnostic in DevTools Console confirms load
     console.log("[pw_meter] hooks initialised");
   });
-})(); /* password strength meter not showing dont know why - maybe come back */
+})(); 
 

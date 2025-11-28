@@ -1,10 +1,6 @@
-# FILE: app/routes/auth.py
-# Adds: session rotation after 2FA success; POST-only logout; rate-limits on login/forgot/resend;
-#        jitter kept. No backup codes.
-
 import datetime as dt
 import random
-import time  # jitter on failure
+import time  
 from flask import Blueprint, render_template, redirect, url_for, flash, session, current_app, request
 from email_validator import validate_email, EmailNotValidError
 from itsdangerous import BadSignature, SignatureExpired
@@ -13,12 +9,17 @@ from ..models import User
 from ..forms import RegisterForm, LoginForm, ForgotForm, ResetForm, TotpForm
 from ..security import signer, strong_password
 from ..email_utils import send_console_email
-from ..ratelimit import allow_action  # simple in-memory rate limit
+from ..ratelimit import allow_action 
 
 bp = Blueprint("auth", __name__, url_prefix="")
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
+    """Handle user registration.
+    args:
+        None
+    returns:
+        Rendered template or redirect on success."""
     if session.get("user_id"):
         return redirect(url_for("main.index"))
     form = RegisterForm()
@@ -52,6 +53,11 @@ def register():
 
 @bp.route("/verify/<token>")
 def verify_email(token):
+    """Handle email verification link.
+    args:
+        token (str): Verification token from email link.
+    returns:
+        Rendered template with verification result message."""
     try:
         data = signer(current_app.config["SECRET_KEY"]).loads(token, max_age=3600)
     except SignatureExpired:
@@ -71,10 +77,15 @@ def verify_email(token):
 
 @bp.route("/login", methods=["GET", "POST"])
 def login():
+    """Handle user login.
+    args:
+        None
+    returns:
+        Rendered template or redirect on success."""
     if session.get("user_id"):
         return redirect(url_for("main.index"))
 
-    # Rate limit by IP to slow spray attempts (10/min)
+    # Rate limit by IP to slow spray attempts 10/min
     ok, retry = allow_action(f"login:{request.remote_addr}", limit=10, per_seconds=60)
     if not ok:
         form = LoginForm()
@@ -101,14 +112,14 @@ def login():
         email = form.email.data.lower().strip()
         user = User.query.filter_by(email=email).first()
 
-        # locked?
+        # locked account check
         if user and user.is_locked():
             until = user.lock_until.strftime("%H:%M:%S")
             flash(f"Account locked. Try after {until} (UTC).", "error")
             time.sleep(random.uniform(0.10, 0.30))
             return render_template("login.html", form=form, show_captcha=show_captcha, captcha_a=captcha_a, captcha_b=captcha_b)
 
-        # CAPTCHA gate
+        # CAPTCHA 
         if show_captcha:
             try:
                 answer = int((form.captcha.data or "").strip())
@@ -159,7 +170,7 @@ def login():
             time.sleep(random.uniform(0.10, 0.30))
             return render_template("login.html", form=form, show_captcha=show_captcha, captcha_a=captcha_a, captcha_b=captcha_b)
 
-        # success → clear counters and go to 2FA
+        # success make sure to clear counters and go to 2FA
         user.failed_logins = 0; user.lock_until = None; user.lock_count = 0
         db.session.commit()
         for k in ("fail_cnt", "captcha_a", "captcha_b", "captcha_notice_shown"):
@@ -171,8 +182,8 @@ def login():
         if current_app.config.get("ENFORCE_2FA", True):
             return redirect(url_for("twofa.enroll_2fa"))
 
-        # (fallback; normally ENFORCE_2FA is True)
-        session.clear()  # session fixation defense (fallback path)
+        # fallback, normally ENFORCE_2FA is True
+        session.clear()  
         session["user_id"] = user.id; session["user_email"] = user.email; session["is_admin"] = bool(user.is_admin)
         flash("Logged in.", "info")
         return redirect(url_for("main.index"))
@@ -181,6 +192,11 @@ def login():
 
 @bp.route("/login/2fa", methods=["GET", "POST"])
 def login_2fa():
+    """"Handle 2FA login step.
+    args:
+        None
+    returns:
+        Rendered template or redirect on success."""
     from ..forms import TotpForm
     from ..models import User
     import pyotp
@@ -198,7 +214,7 @@ def login_2fa():
         code = form.totp.data.strip()
         totp = pyotp.TOTP(user.totp_secret)
         if totp.verify(code, valid_window=1):
-            # rotate session on full auth (WHY: kill any pre-auth session fixation)
+            # rotate session on full auth to prevent fixation
             session.clear()
             session["user_id"] = user.id; session["user_email"] = user.email; session["is_admin"] = bool(user.is_admin)
             flash("2FA passed. Logged in.", "info")
@@ -210,6 +226,11 @@ def login_2fa():
 
 @bp.route("/login/2fa/email", methods=["GET", "POST"])
 def login_2fa_email():
+    """"Handle email-based 2FA login step.
+    args:
+        None
+    returns:
+        Rendered template or redirect on success."""
     pending_id = session.get("pending_user_id")
     if not pending_id:
         return redirect(url_for("auth.login"))
@@ -244,17 +265,26 @@ def login_2fa_email():
 
 @bp.route("/logout", methods=["POST"])
 def logout():
-    # POST + CSRF to prevent CSRF logout
+    """Handle user logout.
+    args:
+        None
+    returns:
+        Redirect to main index."""
     session.clear()
     flash("Logged out.", "info")
     return redirect(url_for("main.index"))
 
 @bp.route("/forgot", methods=["GET", "POST"])
 def forgot_password():
+    """"Handle forgot password requests.
+    args:
+        None
+    returns:
+        Rendered template or redirect on success."""
     if session.get("user_id"):
         return redirect(url_for("main.index"))
 
-    # Rate limit: 5/min per IP (WHY: reduce token/email abuse)
+    # Rate limit: 5/min per IP to reduce email spam 
     ok, retry = allow_action(f"forgot:{request.remote_addr}", limit=5, per_seconds=60)
     if not ok:
         form = ForgotForm()
@@ -275,10 +305,15 @@ def forgot_password():
 
 @bp.route("/resend-verification", methods=["GET", "POST"])
 def resend_verification():
+    """"Handle resending of email verification links.
+    args:
+        None
+    returns:
+        Rendered template or redirect on success."""
     if session.get("user_id"):
         return redirect(url_for("main.index"))
 
-    # Rate limit: 5/min per IP (WHY: reduce email spam)
+    # Rate limit: 5/min per IP, reduce spam again
     ok, retry = allow_action(f"resend:{request.remote_addr}", limit=5, per_seconds=60)
     if not ok:
         form = ForgotForm()
@@ -299,6 +334,11 @@ def resend_verification():
 
 @bp.route("/reset/<token>", methods=["GET", "POST"])
 def reset_password(token):
+    """Handle password reset via token link.
+    args:
+        token (str): Password reset token from email link.
+    returns:
+        Rendered template or redirect on success."""
     form = ResetForm()
     strength_hint = None
     try:

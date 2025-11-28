@@ -3,7 +3,7 @@
 {% block content %}
   <h2>Register</h2>
   <form method="post" novalidate>
-    {{ form.hidden_tag() }} <!-- CSRF -->
+    {{ form.hidden_tag() }} 
 
     <div>
       {{ form.email.label }} {{ form.email(size=40) }}

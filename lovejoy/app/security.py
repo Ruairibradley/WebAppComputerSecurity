@@ -1,7 +1,3 @@
-# app/security.py
-# Minimal shared security helpers.
-# WHY: add back admin_required (lost in the last patch).
-
 import os
 import re
 import secrets
@@ -13,17 +9,19 @@ from flask import session, redirect, url_for, flash, current_app, abort
 import bleach
 from itsdangerous import URLSafeTimedSerializer
 
-# Pillow is optional at import time
 try:
     from PIL import Image
 except Exception:
-    Image = None
+    Image = None # pillow optional at upload time
 
-
-# ---------- Auth decorators ----------
 
 def require_login(fn):
-    """Require an authenticated session (WHY: protect private routes)."""
+    """ Require logged in user, protect endpoints.
+    args:
+        fn: decorated function
+    returns:
+        wrapped function
+    """
     @wraps(fn)
     def _inner(*args, **kwargs):
         if not session.get("user_id"):
@@ -34,34 +32,43 @@ def require_login(fn):
 
 
 def admin_required(fn):
-    """Require admin role (WHY: enforce least-privilege on admin endpoints)."""
+    """Require admin user, protect endpoints.
+    args:
+        fn: decorated function
+    returns:
+        wrapped function"""
     @wraps(fn)
     def _inner(*args, **kwargs):
         if not session.get("user_id"):
             flash("Please log in.", "error")
             return redirect(url_for("auth.login"))
         if not session.get("is_admin"):
-            # 403 instead of redirect so it's demonstrably forbidden.
-            abort(403)
+            abort(403) # 403 forbidden access page - ie not admin
         return fn(*args, **kwargs)
     return _inner
 
 
-# ---------- Token signer ----------
-
 def signer(secret: str) -> URLSafeTimedSerializer:
-    """Timed serializer for signed links (verify/reset)."""
+    """Create a URL-safe timed signer.
+    args:
+        secret: app secret key
+    returns:
+        URLSafeTimedSerializer instance"""
     return URLSafeTimedSerializer(secret, salt="lovejoy.sign")
 
 
-# ---------- Password policy ----------
+
 
 def strong_password(pw: str) -> Tuple[bool, str]:
-    """Policy: ≥12 chars, at least one upper/lower/digit/special."""
+    """Check password strength. Strong = >=12 chars, upper, lower, digit, special.
+    args:
+        pw: password string
+    returns:
+        tuple(bool, str): (is_strong, hint)"""
     if not pw:
         return False, "Empty password."
     rules = [
-        (len(pw) >= 12, "≥12 characters"),
+        (len(pw) >= 12, ">=12 characters"),
         (re.search(r"[A-Z]", pw) is not None, "uppercase letter"),
         (re.search(r"[a-z]", pw) is not None, "lowercase letter"),
         (re.search(r"\d", pw) is not None, "digit"),
@@ -72,26 +79,37 @@ def strong_password(pw: str) -> Tuple[bool, str]:
     return ok, hint
 
 
-# ---------- Sanitisation ----------
 
 def sanitize_comment(text: str) -> str:
-    """Strip tags/attrs (WHY: kill stored XSS)."""
+    """Sanitize user comment input to prevent XSS.
+    args:
+        text: user input string
+    returns:
+        sanitized string"""
     return bleach.clean(text or "", tags=[], attributes={}, strip=True)
 
 
-# ---------- File upload helpers ----------
 
-_ALLOWED_EXTS = {".jpg", ".jpeg", ".png"}
+
+_ALLOWED_EXTS = {".jpg", ".jpeg", ".png"} #img file types allowed
 
 def allowed_file(filename: str) -> str | None:
-    """Allow-list extensions only."""
+    """Check if file extension is allowed.
+    args:
+        filename: name of the file
+    returns:
+        allowed extension or None"""
     _, ext = os.path.splitext(filename or "")
     ext = ext.lower()
     return ext if ext in _ALLOWED_EXTS else None
 
 
 def validate_image_bytes(blob: bytes) -> bool:
-    """Decode with Pillow or magic header check (WHY: stop disguised files)."""
+    """Validate image bytes.
+    args:
+        blob: file bytes
+    returns:
+        True if valid image, False otherwise"""
     if not blob:
         return False
     if Image is None:
@@ -105,7 +123,11 @@ def validate_image_bytes(blob: bytes) -> bool:
 
 
 def strip_image_exif(img_bytes: bytes) -> bytes:
-    """Re-encode to drop EXIF/metadata (WHY: privacy)."""
+    """Strip EXIF metadata from image bytes.
+    args:
+        img_bytes: original image bytes
+    returns:
+        image bytes without EXIF metadata"""
     if Image is None:
         return img_bytes
     try:
@@ -120,5 +142,9 @@ def strip_image_exif(img_bytes: bytes) -> bytes:
 
 
 def random_filename(ext: str) -> str:
-    """Randomise filenames (WHY: avoid collisions/info leaks)."""
+    """Generate a random filename with the given extension.
+    args:
+        ext: file extension (including dot)
+    returns:
+        random filename string"""
     return f"{secrets.token_urlsafe(16)}{ext}"

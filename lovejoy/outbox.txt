@@ -1,8 +1,0 @@
-
---- EMAIL (demo) ---
-Time: 2025-11-22T20:05:09Z
-To: ruairibradley@outlook.com
-Subject: Verify your email
-
-Click to verify: http://127.0.0.1:5000/verify/eyJ1aWQiOjIsImVtYWlsIjoicnVhaXJpYnJhZGxleUBvdXRsb29rLmNvbSJ9.aSIXdQ.pCBOXF2Llb4Mfq5-A7PNB8D1fMY
---------------------

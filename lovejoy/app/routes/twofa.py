@@ -1,6 +1,3 @@
-# FILE: app/routes/twofa.py
-# Adds: session rotation when enrol completes (session fixation defense).
-
 import io
 import qrcode
 import pyotp
@@ -8,12 +5,16 @@ from flask import Blueprint, render_template, session, redirect, url_for, flash,
 from ..forms import TotpForm
 from .. import db
 
-bp = Blueprint("twofa", __name__, url_prefix="")
+bp = Blueprint("twofa", __name__, url_prefix="") 
 
 @bp.route("/enroll-2fa", methods=["GET", "POST"])
 def enroll_2fa():
     """
     Pre-login 2FA enrolment; completes login after verifying a TOTP code.
+    args: 
+        None
+    returns: 
+        Flask response object
     """
     from ..models import User
 
@@ -38,7 +39,6 @@ def enroll_2fa():
             user.totp_secret = secret
             db.session.commit()
 
-            # rotate session on full auth
             session.clear()
             session["user_id"] = user.id
             session["user_email"] = user.email
@@ -53,6 +53,13 @@ def enroll_2fa():
 
 @bp.route("/enroll-2fa/qrcode.png")
 def enroll_qr():
+    """
+    Generate QR code for 2FA enrolment.
+    args:
+        None
+    returns:
+        Flask response object
+    """
     secret = session.get("provision_secret")
     if not session.get("pending_user_id") or not secret:
         return redirect(url_for("auth.login"))

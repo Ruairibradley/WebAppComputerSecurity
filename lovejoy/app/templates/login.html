@@ -3,7 +3,7 @@
 {% block content %}
   <h2>Login</h2>
   <form method="post">
-    {{ form.hidden_tag() }} <!-- CSRF -->
+    {{ form.hidden_tag() }} 
     <div>{{ form.email.label }} {{ form.email(size=40) }}</div>
     <div>{{ form.password.label }} {{ form.password(size=30) }}</div>
     {% if show_captcha %}

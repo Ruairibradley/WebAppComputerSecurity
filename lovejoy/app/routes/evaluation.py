@@ -1,4 +1,3 @@
-# app/routes/evaluation.py
 import os
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, session
 from ..forms import RequestEvalForm
@@ -14,6 +13,11 @@ bp = Blueprint("evaluation", __name__, url_prefix="")
 @bp.route("/request", methods=["GET", "POST"])
 @require_login
 def request_evaluation():
+    """Handle evaluation request submissions.
+    args:
+        None
+    returns:
+        Rendered template or redirect on success."""
     form = RequestEvalForm()
     if form.validate_on_submit():
         comment = sanitize_comment(form.comment.data)
@@ -63,6 +67,11 @@ def request_evaluation():
 @bp.route("/my-requests")
 @require_login
 def my_requests():
+    """Display the logged-in user's evaluation requests.
+    args:
+        None
+    returns:
+        Rendered template with user's requests."""
     rows = (EvaluationRequest.query
             .filter_by(user_id=session["user_id"])
             .order_by(EvaluationRequest.created_at.desc())

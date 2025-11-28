@@ -18,7 +18,7 @@ class LoginForm(FlaskForm):
     """User login form."""
     email = StringField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
-    captcha = StringField("CAPTCHA")  # shown after 3 failures
+    captcha = StringField("CAPTCHA")  # show after 3 failures
     submit = SubmitField("Login")
 
 class TotpForm(FlaskForm): # sign up on first login then from there can use straight away
