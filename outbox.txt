@@ -1,0 +1,211 @@
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T13:36:39Z
+To: ruairibradley828@gmail.com
+Subject: Account locked due to failed logins
+
+Your account was locked for 15 minutes due to repeated failed logins. If this wasn't you, reset your password.
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T13:42:56Z
+To: admin@example.com
+Subject: Password reset
+
+Reset link: http://127.0.0.1:5000/reset/eyJ1aWQiOjEsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJwdXJwb3NlIjoicmVzZXQifQ.aSRg4A.A2DT57KureD95TCYIkLkQ7dcw44
+(Expires in 1 hour)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T13:48:40Z
+To: rb690@sussex.ac.uk
+Subject: Your login code
+
+Use this code to complete login: 781265
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T18:51:58Z
+To: rb690@sussex.ac.uk
+Subject: Your login code
+
+Use this code to complete login: 648639
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T19:09:50Z
+To: rb690@sussex.ac.uk
+Subject: Your login code
+
+Use this code to complete login: 069247
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T19:14:25Z
+To: admin@example.com
+Subject: Your login code
+
+Use this code to complete login: 200965
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T19:14:53Z
+To: rb690@sussex.ac.uk
+Subject: Your login code
+
+Use this code to complete login: 587888
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T19:21:30Z
+To: ruairibradley828@yahoo.co.uk
+Subject: Verify your email
+
+Click to verify: http://127.0.0.1:5000/verify/eyJ1aWQiOjUsImVtYWlsIjoicnVhaXJpYnJhZGxleTgyOEB5YWhvby5jby51ayJ9.aSSwOg.64qSbfV10HJVAH56anCz_Zr82bo
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T19:51:26Z
+To: rb690@sussex.ac.uk
+Subject: Your login code
+
+Use this code to complete login: 593306
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T21:43:08Z
+To: quinlan.k@yahoo.com
+Subject: Verify your email
+
+Click to verify: http://127.0.0.1:5000/verify/eyJ1aWQiOjYsImVtYWlsIjoicXVpbmxhbi5rQHlhaG9vLmNvbSJ9.aSTRbA.RvmTwKnZ76nbXgu6moaMzWOgCyw
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T21:44:11Z
+To: quinlan.k@yahoo.com
+Subject: Evaluation request received
+
+Thanks! Your request ID is 4. We'll review it shortly.
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-24T21:44:40Z
+To: admin@example.com
+Subject: Your login code
+
+Use this code to complete login: 679555
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-11-28T14:51:53Z
+To: user@gmail.com
+Subject: Verify your email
+
+Click to verify: http://127.0.0.1:5000/verify/eyJ1aWQiOjcsImVtYWlsIjoidXNlckBnbWFpbC5jb20ifQ.aSm3CQ.BEA_hu2BO-Rmy-MBtZ8JHR1Xz2Y
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-12-01T15:52:42Z
+To: user1@gmail.com
+Subject: Verify your email
+
+Click to verify: http://127.0.0.1:5000/verify/eyJ1aWQiOjIsImVtYWlsIjoidXNlcjFAZ21haWwuY29tIn0.aS25yg.3Dz5Uuvwg7yfdsDEW-u0zwx4ybk
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-12-01T16:02:55Z
+To: user2@gmail.com
+Subject: Verify your email
+
+Click to verify: http://127.0.0.1:5000/verify/eyJ1aWQiOjMsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIn0.aS28Lw.iFSmIQehxxoFNUXEyz1rFKnvAmk
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-12-01T16:03:48Z
+To: user2@gmail.com
+Subject: Password reset
+
+Reset link: http://127.0.0.1:5000/reset/eyJ1aWQiOjMsImVtYWlsIjoidXNlcjJAZ21haWwuY29tIiwicHVycG9zZSI6InJlc2V0In0.aS28ZA.iJqRZ-XC2yXQqPfba1IYsiFJcSQ
+(Expires in 1 hour)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-12-01T16:56:05Z
+To: admin@example.com
+Subject: Your login code
+
+Use this code to complete login: 431340
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-12-01T18:46:43Z
+To: user1@gmail.com
+Subject: Your login code
+
+Use this code to complete login: 623894
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-12-01T18:47:38Z
+To: user1@gmail.com
+Subject: Evaluation request received
+
+Thanks! Your request ID is 5. We'll review it shortly.
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-12-01T18:48:02Z
+To: admin@example.com
+Subject: Your login code
+
+Use this code to complete login: 543806
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (demo) ---
+Time: 2025-12-01T18:49:14Z
+To: admin@example.com
+Subject: Your login code
+
+Use this code to complete login: 221372
+(Valid for 10 minutes)
+--------------------
+
+--- EMAIL (fallback) ---
+Time: 2025-12-01T20:47:07Z
+To: hello@gmail.com
+Subject: Password reset
+
+Use the link below to reset your password (expires in 1 hour):
+
+http://127.0.0.1:5000/reset/eyJ1aWQiOjcsImVtYWlsIjoiaGVsbG9AZ21haWwuY29tIiwicHVycG9zZSI6InJlc2V0In0.aS3-yg.8Vc7Z5lECtt_1w88-zb2SReTa3c
+------------------------
+
+--- EMAIL (fallback) ---
+Time: 2025-12-01T20:48:31Z
+To: hello@gmail.com
+Subject: Password reset
+
+Use the link below to reset your password (expires in 1 hour):
+
+http://127.0.0.1:5000/reset/eyJ1aWQiOjcsImVtYWlsIjoiaGVsbG9AZ21haWwuY29tIiwicHVycG9zZSI6InJlc2V0In0.aS3_HQ.jV0QrHjnXRhO5oaRkU5wJdW4C7M
+------------------------
+
+--- EMAIL (fallback) ---
+Time: 2025-12-01T20:48:31Z
+To: hello@gmail.com
+Subject: Password reset
+
+Use the link below to reset your password (expires in 1 hour):
+
+http://127.0.0.1:5000/reset/eyJ1aWQiOjcsImVtYWlsIjoiaGVsbG9AZ21haWwuY29tIiwicHVycG9zZSI6InJlc2V0In0.aS3_Hg.dzPIZ5qvm5Rc_KRO9-XzER4u4N8
+------------------------

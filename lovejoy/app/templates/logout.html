@@ -1,0 +1,11 @@
+<!-- logout html page --> 
+<!-- app/templates/logout.html -->
+{% extends "base.html" %}
+{% block content %}
+  <h2>Logout</h2>
+  <p>Confirm you want to log out.</p>
+  <form method="post">
+    {{ form.hidden_tag() }}  <!-- CSRF -->
+    <button type="submit">Confirm logout</button>
+  </form>
+{% endblock %}

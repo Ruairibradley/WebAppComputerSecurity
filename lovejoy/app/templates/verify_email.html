@@ -1,8 +1,17 @@
-<!-- Email Verify -->
-"""
 {% extends "base.html" %}
 {% block content %}
   <h2>Email Verification</h2>
-  <p>{{ message }}</p>
+
+  {% if error %}
+    <p style="color:#b91c1c">{{ error }}</p>
+  {% elif success %}
+    <p style="color:#166534">{{ success }}</p>
+  {% else %}
+    <p>Verify the email address <strong>{{ email }}</strong>.</p>
+    <p>Click the button below to confirm this address.</p>
+    <form method="post">
+      {{ form.hidden_tag() }} <!-- CSRF -->
+      <button type="submit">Confirm email</button>
+    </form>
+  {% endif %}
 {% endblock %}
-"""
